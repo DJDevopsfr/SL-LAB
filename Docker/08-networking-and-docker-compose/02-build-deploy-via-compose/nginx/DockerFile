@@ -1,0 +1,14 @@
+# Use official nginx image as base
+FROM nginx:latest
+
+# Install bash, ping, and MySQL client (Debian-based)
+RUN apt-get update && \
+    apt-get install -y iputils-ping default-mysql-client && \
+    rm -rf /var/lib/apt/lists/*
+
+# Optional: copy custom index.html
+COPY index.html /usr/share/nginx/html/index.html
+COPY TODO /usr/local/bin/
+
+ENTRYPOINT ["wait-for-mysql.sh"]
+CMD ["nginx", "-g", "daemon off;"]
