@@ -1,0 +1,29 @@
+services:
+  web:
+    TODO: ./TODO
+    container_name: nginx-web-tier
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - TODO
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-data-tier
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecret
+      MYSQL_DATABASE: demo
+    volumes:
+      - TODO:/var/lib/mysql
+    networks:
+      - TODO
+
+volumes:
+  mysql8_datavol:
+
+networks:
+  custom_bridge_network:
+    name: nginx_mysql_network
+    driver: bridge
