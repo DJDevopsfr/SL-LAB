@@ -1,0 +1,12 @@
+# Ensure you have replaced all "TODO" tokens with correct answer in file ./Dockerfile_TODO
+# and then rename to Dockerfile
+
+# Run docker compose with --build and "up" command
+docker compose up -d --build
+
+# Execute command "python3 -m app.main" in you "production" container
+# replace "???" with missing sub-command
+docker ??? -it python-app python3 -m app.main
+
+# Cleanup
+docker compose down -v

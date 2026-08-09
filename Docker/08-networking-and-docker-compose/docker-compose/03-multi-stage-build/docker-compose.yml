@@ -1,0 +1,6 @@
+services:
+  app:
+    build: .
+    image: mypy:latest
+    container_name: python-app
+    command: python -m app.main

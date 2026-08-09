@@ -1,0 +1,22 @@
+# Ensure you have replaced all "TODO" tokens with correct answer in file docker-compose-TODO.yml
+# and then rename to docker-compose.yml
+
+# Ensure you have replaced all "TODO" tokens with correct answer in file  nginx/Dockerfile_TODO
+# and then rename to Dockerfile
+
+# Start up all containers via docker compose and ensure to pass --build flag
+# since we are building our own software and deploying (devops on 1 machine ... for now) 
+docker compose up -d --build
+
+# look if connection successfull from mginx-->mysql and see mysql database tables in logs
+docker compose logs -f web
+
+# Open up browser to your EC2 public IP and port number from docker compose file to web app (8080)
+# Do you see your custom nginx index.html page with all mysql databases listed?
+# If so, send me your http link in chat
+
+# Cleanup after thumbs up from me
+docker compose down
+
+# Challenge: Did you also delete the mysql volume? How to check?
+# If still there, how would you do that via docker compose command?

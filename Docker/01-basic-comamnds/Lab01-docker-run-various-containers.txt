@@ -1,0 +1,40 @@
+1)
+# Pull 3 different Java images, each with own Java version (taken from DockerHub)
+docker pull amazoncorretto:26-alpine3.23-jdk
+docker pull amazoncorretto:latest   
+docker pull alpine/java:22-jdk
+
+2)
+# Create/run java container with image below
+docker run --name j22 --rm -it alpine/java:22-jdk 
+
+# This automatically starts a jshell inside the java container (jshell allows you to do little java tests/proto-types in a shell)
+# Type the following
+	jshell> System.out.println("hi");
+	jshell> /exit
+	
+#The container automatically exits when jshell is exited (via /quit) since it was the only process started in container
+
+3)
+# Re-create again but this time execute your own command (instead of default jshell) 
+# via "exec" and specify "sh" to open up a shell in container
+docker run --name j22 --rm -it alpine/java:22-jdk sh
+
+# Type following to see openjdk version info print out to contfirm Java 22 is being used in container
+	java --version
+	exit
+# Now container removed  (since --rm) because you "exit"ed the "sh" process in container
+
+
+4) Challenge:
+   a) Perform same commands on the other 2 container images
+   b) Note that some images do not automatically start a jshell but rather just place you in a shell with prompt "#"
+      If you want to styart a hshwell in container, just type "jshell" and the prompt changes to "jshell>"
+	  
+5) Can you confirm that there are no containers left on your machine (which docker command to check)?
+   hint: ps
+   
+6) Bonus (advanced): 
+   Can you answer why some container images start a jshell by default and others do not?
+   If so, answer in chat and prove it to me via a screen shot too.
+   Hint: Do not look for answer in container itself.
