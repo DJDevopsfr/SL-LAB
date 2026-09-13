@@ -10,7 +10,7 @@ public class HelloWorldController {
 
 	@RequestMapping("/hello")
 	public String sayHello() {
-		return "hello, my name is rakesh";
+		return "hello, my name is Djodi";
 	}
 	
 	@GetMapping("/say/{name}")
