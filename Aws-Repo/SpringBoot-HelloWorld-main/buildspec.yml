@@ -36,7 +36,7 @@ phases:
 
       # IMPORTANT: put the file at the CodeBuild artifact root
       - cd $CODEBUILD_SRC_DIR
-      - printf '[{"name":"hellocontainer","imageUri":"%s"}]' "$ECR_URI:$IMAGE_TAG" > imagedefinitions.json
+      - printf '[{"name":"Hellocontainer","imageUri":"%s"}]' "$ECR_URI:$IMAGE_TAG" > imagedefinitions.json
 
       - echo "Checking imagedefinitions.json:"
       - cat imagedefinitions.json
