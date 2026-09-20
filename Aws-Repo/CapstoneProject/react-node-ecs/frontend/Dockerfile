@@ -4,5 +4,5 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN mkdir -p public
-EXPOSE 3000
+EXPOSE 5173
 ENTRYPOINT ["./entrypoint.sh"]
