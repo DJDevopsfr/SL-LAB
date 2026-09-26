@@ -1,0 +1,1 @@
+const express=require("express");const app=express();app.get("/api/time",(_,r)=>r.json({time:new Date().toUTCString()}));app.get("/health",(_,r)=>r.send("ok"));app.listen(3001,"0.0.0.0",()=>console.log("backend :3001"));
