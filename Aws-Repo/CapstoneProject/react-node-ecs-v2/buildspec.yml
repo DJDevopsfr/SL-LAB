@@ -1,0 +1,92 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: "us-east-1"
+
+phases:
+
+  pre_build:
+    commands:
+      - echo "========== PRE BUILD =========="
+      - aws --version
+
+      # Move to application directory
+      - cd Aws-Repo/CapstoneProject/react-node-ecs-v2
+
+      # Get AWS account dynamically
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - ECR_REGISTRY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+      # Image tag = first 7 characters of Git commit
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+      - BACKEND_URI=$ECR_REGISTRY/$BACKEND_REPO
+      - FRONTEND_URI=$ECR_REGISTRY/$FRONTEND_REPO
+
+      - echo "AWS Account ID = $AWS_ACCOUNT_ID"
+      - echo "Backend URI = $BACKEND_URI"
+      - echo "Frontend URI = $FRONTEND_URI"
+      - echo "Image tag = $IMAGE_TAG"
+
+      # Login to ECR
+      - echo "Logging into Amazon ECR..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+  build:
+    commands:
+      - echo "========== BUILD =========="
+      - echo "Build started on $(date)"
+
+      # -------------------------------
+      # BACKEND
+      # -------------------------------
+      - echo "Building backend..."
+      - docker build -t $BACKEND_URI:$IMAGE_TAG ./backend
+      - docker tag $BACKEND_URI:$IMAGE_TAG $BACKEND_URI:latest
+
+      # -------------------------------
+      # FRONTEND
+      # -------------------------------
+      - echo "Building frontend..."
+      - docker build -t $FRONTEND_URI:$IMAGE_TAG ./frontend
+      - docker tag $FRONTEND_URI:$IMAGE_TAG $FRONTEND_URI:latest
+
+  post_build:
+    commands:
+      - echo "========== POST BUILD =========="
+
+      # Push Backend
+      - echo "Pushing backend images..."
+      - docker push $BACKEND_URI:$IMAGE_TAG
+      - docker push $BACKEND_URI:latest
+
+      # Push Frontend
+      - echo "Pushing frontend images..."
+      - docker push $FRONTEND_URI:$IMAGE_TAG
+      - docker push $FRONTEND_URI:latest
+
+      # --------------------------------------------------
+      # Generate ECS deployment definition files
+      # --------------------------------------------------
+
+      - echo "Creating Backend ECS image definition..."
+      - printf '[{"name":"Backendapp","imageUri":"%s"}]' "$BACKEND_URI:$IMAGE_TAG" > imagedefinitions-backend.json
+
+      - echo "Creating Frontend ECS image definition..."
+      - printf '[{"name":"Frontendapp","imageUri":"%s"}]' "$FRONTEND_URI:$IMAGE_TAG" > imagedefinitions-frontend.json
+
+      - echo "Backend image definition:"
+      - cat imagedefinitions-backend.json
+
+      - echo "Frontend image definition:"
+      - cat imagedefinitions-frontend.json
+
+      - echo "Build completed on $(date)"
+
+artifacts:
+  files:
+    - Aws-Repo/CapstoneProject/react-node-ecs-v2/imagedefinitions-backend.json
+    - Aws-Repo/CapstoneProject/react-node-ecs-v2/imagedefinitions-frontend.json
+  discard-paths: yes
