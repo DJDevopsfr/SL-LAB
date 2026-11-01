@@ -1,0 +1,41 @@
+# Pre-requisites
+docker info
+docker network ls
+docker volume ls
+
+# Initialize swarm
+docker swarm init
+
+ip a
+docker network ls
+
+# Check nodes
+docker node ls
+
+# Create nginx service with 3 replicas
+docker service create --name nginx-service --replicas 3 -p 8080:80 nginx
+
+# Verify service
+docker service ls
+docker service ps nginx-service
+
+# Scale up
+docker service scale nginx-service=10
+
+# Verify scaling
+docker service ps nginx-service
+docker service ls
+docker ps
+
+# Scale down to zero
+docker service scale nginx-service=0
+
+# Verify
+docker service ls
+
+# Remove service
+docker service rm nginx-service
+
+# Final verification
+docker service ls
+docker node ls
