@@ -1,0 +1,1 @@
+https://github.com/mvpjava/terraform-aws.git

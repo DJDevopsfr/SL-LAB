@@ -1,0 +1,48 @@
+Google Drive: https://drive.google.com/drive/u/1/folders/1bBugziExg6kT0TrTYshtfp8Ue39nhw-G
+
+1 - git-clone-this-repo-for-terraform-labs.txt
+    - git clone (use the link) --> VS Code
+	
+2- work with vpc folder
+   https://drive.google.com/drive/u/1/folders/1URYEiK03TlzNttwOhMkMd9Bpyg9yqIRa
+   
+3 - Modify what is yours in variables.tf (if needed)
+
+4 - look at main.tf and understand it
+
+5 - Open terminal
+    * make sure your in vpc/01-vpc to execute tf commands
+	- terraform init
+	- terraform validate
+	- terraform fmt
+	- terraform plan -out my-plan
+	- terraform apply --auto-approve
+	- terrform show
+	- terraform state list
+	** go look at aws account to see your resources
+	- terraform destroy
+	
+Google Drive: https://drive.google.com/drive/u/1/folders/1bBugziExg6kT0TrTYshtfp8Ue39nhw-G
+
+1 - git-clone-this-repo-for-terraform-labs.txt
+    - git clone (use the link) --> VS Code
+	
+2- work with vpc folder
+   https://drive.google.com/drive/u/1/folders/1URYEiK03TlzNttwOhMkMd9Bpyg9yqIRa
+   
+3 - Modify what is yours in variables.tf (if needed)
+
+4 - look at main.tf and understand it
+
+5 - Open terminal
+    * make sure your in vpc/01-vpc to execute tf commands
+	- terraform init
+	- terraform validate
+	- terraform fmt
+	- terraform plan -out my-plan
+	- terraform apply --auto-approve
+	- terrform show
+	- terraform state list
+	** go look at aws account to see your resources
+	- terraform destroy
+	
