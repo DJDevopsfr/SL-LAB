@@ -1,0 +1,30 @@
+---
+- name: Create users with groups
+  hosts: multi
+  become: yes
+
+  vars:
+    users:
+      - name: alice
+        group: admins
+      - name: bob
+        group: developers
+
+  tasks:
+    - name: Ensure all groups exist
+      ansible.builtin.group:
+        name: "{{ item.group }}"
+        state: present
+      loop: "{{ users }}"
+      loop_control:
+        label: "Creating group {{ item.group }}"
+
+    - name: Create users with groups
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        group: "{{ item.group }}"
+        state: present
+      loop: "{{ users }}"
+      loop_control:
+        label: "Creating user {{ item.name }} with group {{ item.group }}"
+

@@ -1,0 +1,27 @@
+---
+- name: Verify Apache is listening on port {{ apache_port }}
+  ansible.builtin.shell: "ss -tuln | grep ':{{ apache_port }}'"
+  register: httpd_port_check
+  changed_when: false
+
+- name: Show Apache listening status
+  ansible.builtin.debug:
+    var: httpd_port_check.stdout
+
+- name: Assert Apache is bound to port {{ apache_port }}
+  ansible.builtin.assert:
+    that:
+      - httpd_port_check.rc == 0
+    fail_msg: "Apache is NOT listening on port {{ apache_port }}"
+    success_msg: "Apache is correctly listening on port {{ apache_port }}"
+
+- name: Test Apache HTTP response
+  ansible.builtin.uri:
+    url: "http://localhost:{{ apache_port }}"
+    return_content: yes
+  register: http_response
+
+- name: Display Apache response snippet
+  ansible.builtin.debug:
+    msg: "Apache returned: {{ http_response.content | truncate(80) }}"
+

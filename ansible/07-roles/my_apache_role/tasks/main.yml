@@ -1,0 +1,6 @@
+---
+- name: Setup Apache
+  import_tasks: setup.yml
+
+- name: Run Apache tests
+  import_tasks: tests.yml

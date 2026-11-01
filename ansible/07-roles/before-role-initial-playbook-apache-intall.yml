@@ -1,0 +1,56 @@
+---
+- name: Configure Apache on default port 80
+  hosts: app_servers
+  become: yes
+
+  vars:
+    apache_port: 80
+    web_root: /var/www/html
+    index_file: index.html
+    index_content: "<h1>EC2 Deployed Webpage via Ansible</h1>"
+
+  tasks:
+    - name: Install Apache (httpd)
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Ensure Apache is started and enabled
+      ansible.builtin.systemd:
+        name: httpd
+        state: restarted
+        enabled: yes
+
+    - name: Create default index.html
+      ansible.builtin.copy:
+        dest: "{{ web_root }}/{{ index_file }}"
+        content: "{{ index_content }}"
+        owner: apache
+        group: apache
+        mode: "0644"
+
+    - name: Verify Apache is listening on port 80
+      ansible.builtin.shell: "ss -tuln | grep ':{{ apache_port }}'"
+      register: httpd_80  # stores the output in httpd_80 and return code (rc)
+      changed_when: false   # force Ansible to report OK instead of changed
+
+    - name: Show Apache listening status
+      ansible.builtin.debug:
+        var: httpd_80.stdout
+
+    - name: Assert Apache is bound to port 80
+      ansible.builtin.assert:
+        that:
+          - httpd_80.rc == 0
+        fail_msg: "Apache is NOT listening on port 80"
+        success_msg: "Apache is correctly listening on port 80"
+
+    - name: Test Apache response on default port 80
+      ansible.builtin.uri:
+        url: "http://localhost:{{ apache_port }}"
+        return_content: yes
+      register: http_response
+
+    - name: Display response snippet
+      ansible.builtin.debug:
+        msg: "Apache  returned: {{ http_response.content | truncate(80) }}"

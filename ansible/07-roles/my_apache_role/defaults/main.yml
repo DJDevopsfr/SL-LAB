@@ -1,0 +1,5 @@
+---
+apache_port: 80
+web_root: /var/www/html
+index_file: index.html
+

@@ -1,0 +1,31 @@
+---
+- name: Install and configure Nginx with template
+  hosts: multi
+  become: yes
+
+  vars:
+    nginx_port: 8080   # change port here dynamically
+
+  tasks:
+    - name: Ensure Nginx is installed (Amazon Linux 2023 only)
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      when: ansible_distribution == "Amazon" and ansible_distribution_major_version == "2023"
+
+    - name: Deploy nginx.conf from template
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+

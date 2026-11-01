@@ -1,0 +1,12 @@
+all:
+  children:
+    app_servers:
+      hosts:
+        18.169.188.201: {}   # dictionary format for host
+    db_servers:
+      hosts:
+        18.133.170.172: {}
+    multi:
+      children:
+        app_servers: {}        # dictionary format for child group
+        db_servers: {}

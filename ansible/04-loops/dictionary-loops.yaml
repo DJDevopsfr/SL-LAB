@@ -1,0 +1,21 @@
+---
+- name: Create multiple users with specific settings
+  hosts: multi
+  become: yes
+  tasks:
+    - name: Create users from dictionary
+      ansible.builtin.user:
+        name: "{{ item.key }}"
+        shell: "{{ item.value.shell }}"
+        home: "{{ item.value.home }}"
+        state: present
+      loop: "{{ users_dict | dict2items }}"
+
+  vars:
+    users_dict:
+      alice:
+        shell: /bin/bash
+        home: /home/alice
+      bob:
+        shell: /bin/zsh
+        home: /home/bob

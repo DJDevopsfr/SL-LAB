@@ -1,0 +1,3 @@
+Intro to ansible loope which can be used to loop over ...
+- list of commands to install
+- list of groups, users to create

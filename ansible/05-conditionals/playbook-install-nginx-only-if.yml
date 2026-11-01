@@ -1,0 +1,43 @@
+---
+- name: Install and configure Nginx with custom config
+  hosts: multi
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Install Nginx (only on Amazon Linux 2023)
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      when: ansible_distribution == "Amazon" and ansible_distribution_major_version == "2023"
+
+    - name: Deploy custom Nginx config
+      ansible.builtin.copy:
+        dest: /etc/nginx/conf.d/myapp.conf
+        content: |
+          server {
+              listen 8080;
+              server_name localhost;
+
+              location / {
+                  root /usr/share/nginx/html;
+                  index index.html;
+              }
+          }
+        owner: root
+        group: root
+        mode: "0644"
+      register: config_result
+
+    - name: Restart Nginx if config changed
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: config_result.changed
+
+    - name: Ensure Nginx is enabled and running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+

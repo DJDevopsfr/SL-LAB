@@ -1,0 +1,6 @@
+all:
+  children:
+    ec2_targets:
+      hosts:
+        18.175.226.108:
+        3.8.18.139:

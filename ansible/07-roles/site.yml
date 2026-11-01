@@ -1,0 +1,8 @@
+---
+- name: Configure Apache Web Server
+  hosts: app_servers
+  become: yes
+
+  roles:
+    - my_apache_role
+
