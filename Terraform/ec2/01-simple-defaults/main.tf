@@ -12,12 +12,12 @@ provider "aws" {
 }
 
 resource "aws_instance" "terrafform-ec2" {
-  ami               = "ami-0c0493bbac867d427"
+  ami               = "ami-09bf9dfeeb1e9adbc"
   count             = 1
-  availability_zone = "eu-west-2b"
+  availability_zone = "us-east-1c"
   instance_type     = "t2.micro"
 
   tags = {
-    env = "demo"
+    env = "TF-Demo"
   }
 }
