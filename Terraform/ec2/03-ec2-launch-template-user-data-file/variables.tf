@@ -13,16 +13,16 @@ variable "ec2_instance_type" {
 variable "ec2_image_id" {
   description = "EC2 AMI Image ID"
   type        = string
-  default     = "ami-0c0493bbac867d427"
+  default     = "ami-09bf9dfeeb1e9adbc"
 }
 
 variable "region" {
   description = "AWS region to provision infrastructure in"
   type        = string
-  default     = "eu-west-2"
+  default     = "us-east-1"
 }
 
-variable "access_key" {
+/*variable "access_key" {
   description = "IAM access key"
   type        = string
   sensitive   = true
@@ -33,3 +33,4 @@ variable "secret_key" {
   type        = string
   sensitive   = true
 }
+*/
