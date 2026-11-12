@@ -29,7 +29,7 @@ resource "aws_launch_template" "apache-launch-template" {
 
 resource "aws_instance" "apache-webserver" {
   count                       = 1
-  availability_zone           = "eu-west-2b"
+  availability_zone           = "us-east-1c"
   user_data_replace_on_change = true
 
   launch_template {
