@@ -1,9 +1,9 @@
 variable "region" {
   description = "AWS region to provision infrastructure in"
   type        = string
-  default     = "eu-west-2"
+  default     = "us-east-1"
 }
-
+/*
 variable "access_key" {
   description = "IAM access key"
   type        = string
@@ -15,7 +15,7 @@ variable "secret_key" {
   type        = string
   sensitive   = true
 }
-
+*/
 variable "cidr_block" {
   description = "VPC CIDR Block"
   type        = string
@@ -37,5 +37,5 @@ variable "private_subnet_cidrs" {
 variable "azs" {
   type        = list(string)
   description = "Availability Zones"
-  default     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  default     = ["us-east-1d", "us-east-1c", "us-east-1a"]
 }
